@@ -8,7 +8,13 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+protocol UpdateTableViewWithTips {
+    
+    func updateTips(tip: Double)
+    
+}
+
+class ViewController: UITableViewController, UpdateTableViewWithTips {
 
     
     
@@ -18,20 +24,24 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return tipArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath)
         
+        cell.textLabel?.text = "\(self.tipArray[indexPath.row])"
         
         return cell
         
     }
     
     func calcAllTips() -> Double{
-        return 0.0
+        
+        return tipArray.reduce(0) { (result, nextValue) -> Double in
+            return result + nextValue
+        }
     }
 
    
@@ -53,6 +63,17 @@ class ViewController: UITableViewController {
         alert.addAction(cancelAction)
         
         present(alert, animated: true)
+    }
+    
+    func updateTips(tip: Double) {
+        tipArray.append(tip)
+        self.tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destVC = segue.destination as! AddTipViewController
+        destVC.delegate = self
+        
     }
 
 }

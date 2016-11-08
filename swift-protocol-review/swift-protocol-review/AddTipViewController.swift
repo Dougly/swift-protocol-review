@@ -12,19 +12,37 @@ class AddTipViewController: UIViewController {
 
     @IBOutlet weak var tipTextField: UITextField!
     
+    var delegate: UpdateTableViewWithTips?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
 
         
     }
 
     
     @IBAction func addTipBtnPressed(_ sender: Any) {
-        // get tipValueFromTextField 
+        // get tipValueFromTextField
+        let amount = tipTextField.text
         // make sure its a Double
-        //calc tip at 15%
-        // pass back to the first view controller
+        
+        self.dismiss(animated: true, completion: nil)
+        
+        if let amount = amount {
+            //calc tip at 15%
+            // pass back to the first view controller
+            if let amountAsDouble = Double(amount) {
+                delegate?.updateTips(tip: amountAsDouble * 0.2)
+                
+                
+            }
+        }
+        
+        
     }
 
    
